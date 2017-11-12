@@ -55,11 +55,11 @@ void parallel_time(double a, double b, double eps, float step, int num_of_thread
 
 	t_1 = omp_get_wtime();
 
-	for (int n = 1; n < 10000000000; n > 100000000 ? n += 10000 : n *= step) {
+	for (int n = 1; n < 10000000000; n > 100000000 ? n += 100000 : n *= step) {
 		dd = (b - a) / n;
 		J_1 = J_2;
 		J_2 = 0;
-		#pragma omp parallel for schedule(static) reduction(+:J_2) num_threads(num_of_threads)
+		#pragma omp parallel for schedule(static) private(i, x_i) shared(a, dd, n) reduction(+:J_2) num_threads(num_of_threads)
 		for (i = 1; i < n - 1; i++) {
 				x_i = a + dd*i;
 				J_2 += f(x_i);
