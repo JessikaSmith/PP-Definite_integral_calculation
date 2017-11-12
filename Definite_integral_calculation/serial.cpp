@@ -32,9 +32,9 @@ void serial_time(double a, double b, double eps, float step) {
 		}
 		J_2 += edges;
 		J_2 = dd*J_2;
-		cout << log10(abs((J_1 - J_2) / J_2)) <<" "<<J_2 << endl;
+		// cout << log10(abs((J_1 - J_2) / J_2)) <<" "<<J_2 << endl;
 		if (log10(abs((J_1 - J_2)/J_2)) <= eps){
-			cout << "Result for serial program: " << J_2;
+			cout << "Result for serial program: " << J_2 << " and n = " << n << " points.";;
 			break;
 		}
 	}
@@ -68,7 +68,7 @@ void parallel_time(double a, double b, double eps, float step, int num_of_thread
 		J_2 = dd*J_2;
 		// cout << log10(abs((J_1 - J_2) / J_2)) <<" "<< J_2 << endl;
 		if (log10(abs((J_1 - J_2) / J_2)) <= eps) {
-			cout << "Result for " << num_of_threads << " threads: " << J_2;
+			cout << "Result for " << num_of_threads << " threads: " << J_2 << " and n = " << n << " points.";
 			break;
 		}
 	}
@@ -83,16 +83,16 @@ int main() {
 	const int num_of_elem = 7;
 	double a[num_of_elem] = { 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10 };
 	double b[num_of_elem] = { 0.0001, 0.001, 0.01, 0.1, 1, 10, 100 };
-	double eps[num_of_elem] = { -8, -10, -11, -12, -11, -11, -11 };
+	double eps[num_of_elem] = { -8, -10, -11, -11, -11, -11, -11 };
 	float initial_step = 2;
 
 	for (int i = 0; i < num_of_elem; i++) {
 		cout << "===========  a = " << a[i] << ", b = " << b[i] << " ===========" << endl;
 		// 0 - 797
-		// serial_time(a[i], b[i], eps[i], initial_step);
-		for (int num_of_threads = 2; num_of_threads < 17; num_of_threads += 2) {
-			parallel_time(a[i], b[i], eps[i], initial_step, num_of_threads);
-		}
+		serial_time(a[i], b[i], eps[i], initial_step);
+		//for (int num_of_threads = 2; num_of_threads < 17; num_of_threads += 2) {
+		//	parallel_time(a[i], b[i], eps[i], initial_step, num_of_threads);
+		//}
 		cout << endl;
 	}
 }
